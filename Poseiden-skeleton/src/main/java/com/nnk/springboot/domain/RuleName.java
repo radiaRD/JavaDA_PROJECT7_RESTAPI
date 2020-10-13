@@ -1,15 +1,19 @@
 package com.nnk.springboot.domain;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.sql.Timestamp;
+
 
 @Entity
 @Table(name = "rulename")
 public class RuleName implements Serializable {
+    private static final Logger logger = LogManager.getLogger(RuleName.class);
+
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
     private String description;
@@ -18,9 +22,10 @@ public class RuleName implements Serializable {
     private String sqlStr;
     private String sqlPart;
 
-    public RuleName(){}
-    public RuleName(Integer id, String name, String description, String json, String template, String sqlStr, String sqlPart) {
-        this.id = id;
+    public RuleName() {
+    }
+
+    public RuleName( String name, String description, String json, String template, String sqlStr, String sqlPart) {
         this.name = name;
         this.description = description;
         this.json = json;
@@ -29,14 +34,6 @@ public class RuleName implements Serializable {
         this.sqlPart = sqlPart;
     }
 
-    public RuleName(String rule_name, String description, String json, String template, String sql, String sql_part) {
-        this.name = rule_name;
-        this.description = description;
-        this.json = json;
-        this.template = template;
-        this.sqlStr = sql;
-        this.sqlPart = sql_part;
-    }
 
     public Integer getId() {
         return id;

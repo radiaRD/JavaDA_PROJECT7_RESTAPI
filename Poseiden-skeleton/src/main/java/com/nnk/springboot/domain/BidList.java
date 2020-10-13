@@ -1,20 +1,18 @@
 package com.nnk.springboot.domain;
 
-
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.data.annotation.CreatedDate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "bidlist")
 public class BidList implements Serializable {
+    private static final Logger logger = LogManager.getLogger(BidList.class);
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer bidListId;
@@ -42,10 +40,10 @@ public class BidList implements Serializable {
     private String sourceListId;
     private String side;
 
-    public  BidList(){}
+    public BidList() {
+    }
 
-    public BidList(Integer bidListId, @NotNull(message = "account is mandatory") String account, @NotNull(message = "type is mandatory") String type, Double bidQuantity, Double askQuantity, Double bid, Double ask, String benchmark, Timestamp bidListDate, String commentary, String security, String status, String trader, String book, String creationName, Timestamp creationDate, String revisionName, Timestamp revisionDate, String dealName, String dealType, String sourceListId, String side) {
-        this.bidListId = bidListId;
+    public BidList( @NotNull(message = "account is mandatory") String account, @NotNull(message = "type is mandatory") String type, Double bidQuantity, Double askQuantity, Double bid, Double ask, String benchmark, Timestamp bidListDate, String commentary, String security, String status, String trader, String book, String creationName, Timestamp creationDate, String revisionName, Timestamp revisionDate, String dealName, String dealType, String sourceListId, String side) {
         this.account = account;
         this.type = type;
         this.bidQuantity = bidQuantity;
@@ -67,12 +65,6 @@ public class BidList implements Serializable {
         this.dealType = dealType;
         this.sourceListId = sourceListId;
         this.side = side;
-    }
-
-    public BidList(String account_test, String type_test, double v) {
-        this.account = account_test;
-        this.type = type_test;
-        this.bidQuantity = v;
     }
 
     public Integer getBidListId() {

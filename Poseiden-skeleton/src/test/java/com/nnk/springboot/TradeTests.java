@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,31 +18,30 @@ import java.util.Optional;
 @SpringBootTest
 public class TradeTests {
 
-	@Autowired
-	private TradeRepository tradeRepository;
+    @Autowired
+    private TradeRepository tradeRepository;
 
-	@Test
-	public void tradeTest() {
-		Trade trade = new Trade("Trade Account", "Type",10d);
+    @Test
+    public void tradeTest() {
+        Trade trade = new Trade( "Trade Account", "Type", 10d, 20d, 15d, 16d, "Benchmark", Timestamp.valueOf("2020-10-03 21:04:40"), "Security", "Status","Trader", "Book", "CreationName",Timestamp.valueOf("2020-10-03 21:04:40"), "RevisionName", Timestamp.valueOf("2020-10-03 21:10:40"), "DealName", "DealType", "SourceListId", "Side");
+        // Save
+        trade = tradeRepository.save(trade);
+        Assert.assertNotNull(trade.getTradeId());
+        Assert.assertTrue(trade.getAccount().equals("Trade Account"));
 
-		// Save
-		trade = tradeRepository.save(trade);
-		Assert.assertNotNull(trade.getTradeId());
-		Assert.assertTrue(trade.getAccount().equals("Trade Account"));
+        // Update
+        trade.setAccount("Trade Account Update");
+        trade = tradeRepository.save(trade);
+        Assert.assertTrue(trade.getAccount().equals("Trade Account Update"));
 
-		// Update
-		trade.setAccount("Trade Account Update");
-		trade = tradeRepository.save(trade);
-		Assert.assertTrue(trade.getAccount().equals("Trade Account Update"));
+        // Find
+        List<Trade> listResult = tradeRepository.findAll();
+        Assert.assertTrue(listResult.size() > 0);
 
-		// Find
-		List<Trade> listResult = tradeRepository.findAll();
-		Assert.assertTrue(listResult.size() > 0);
-
-		// Delete
-		Integer id = trade.getTradeId();
-		tradeRepository.delete(trade);
-		Optional<Trade> tradeList = tradeRepository.findById(id);
-		Assert.assertFalse(tradeList.isPresent());
-	}
+        // Delete
+        Integer id = trade.getTradeId();
+        tradeRepository.delete(trade);
+        Optional<Trade> tradeList = tradeRepository.findById(id);
+        Assert.assertFalse(tradeList.isPresent());
+    }
 }

@@ -1,6 +1,8 @@
 package com.nnk.springboot.domain;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -11,6 +13,8 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "curvepoint")
 public class CurvePoint implements Serializable {
+    private static final Logger logger = LogManager.getLogger(CurvePoint.class);
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -21,10 +25,10 @@ public class CurvePoint implements Serializable {
     private Double value;
     private Timestamp creationDate;
 
-    public CurvePoint(){}
+    public CurvePoint() {
+    }
 
-    public CurvePoint(Integer id, @NotNull(message = "curveId must not be null") Integer curveId, Timestamp asOfDate, Double term, Double value, Timestamp creationDate) {
-        this.id = id;
+    public CurvePoint( @NotNull(message = "curveId must not be null") Integer curveId, Timestamp asOfDate, Double term, Double value, Timestamp creationDate) {
         this.curveId = curveId;
         this.asOfDate = asOfDate;
         this.term = term;
@@ -32,11 +36,6 @@ public class CurvePoint implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public CurvePoint(int i, double v, double v1) {
-        this.curveId = i;
-        this.term = v;
-        this.value = v1;
-    }
 
     public Integer getId() {
         return id;

@@ -1,12 +1,17 @@
 package com.nnk.springboot.domain;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
+        import org.apache.logging.log4j.LogManager;
+        import org.apache.logging.log4j.Logger;
+
+        import javax.persistence.*;
+        import javax.validation.constraints.NotBlank;
+        import java.io.Serializable;
 
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
+    private static final Logger logger = LogManager.getLogger(User.class);
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -23,21 +28,12 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(Integer id, @NotBlank(message = "Username is mandatory") String username, @NotBlank(message = "Password is mandatory") String password, @NotBlank(message = "FullName is mandatory") String fullname, @NotBlank(message = "Role is mandatory") String role) {
-        this.id = id;
+    public User( @NotBlank(message = "Username is mandatory") String username, @NotBlank(message = "Password is mandatory") String password, @NotBlank(message = "FullName is mandatory") String fullname, @NotBlank(message = "Role is mandatory") String role) {
         this.username = username;
         this.password = password;
         this.fullname = fullname;
         this.role = role;
     }
-
-    public User(String userName, String s, String fullName, String user) {
-        this.username = userName;
-        this.password = s;
-        this.fullname = fullName;
-        this.role = user;
-    }
-
 
     public Integer getId() {
         return id;

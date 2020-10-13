@@ -18,29 +18,29 @@ public class UserTests {
     @Autowired
     private UserRepository userRepository;
 
-    User user = new User ("UserName"," Password","FullName","USER");
+    User user = new User("UserName", " Password", "FullName", "USER");
 
 
     @Test
     public void userTest() {
-    // Save
-    user =  userRepository.save(user);
-		Assert.assertNotNull(user.getId());
-	Assert.assertTrue(user.getUsername().equals("UserName"));
+        // Save
+        user = userRepository.save(user);
+        Assert.assertNotNull(user.getId());
+        Assert.assertTrue(user.getUsername().equals("UserName"));
 
-    // Update
-		user.setUsername("Username");
-    user = userRepository.save(user);
-		Assert.assertTrue(user.getUsername().equals("Username"));
+        // Update
+        user.setUsername("Username");
+        user = userRepository.save(user);
+        Assert.assertTrue(user.getUsername().equals("Username"));
 
- //    Find
-    List<User> listResult = userRepository.findAll();
-		Assert.assertTrue(listResult.size() > 0);
+        //    Find
+        List<User> listResult = userRepository.findAll();
+        Assert.assertTrue(listResult.size() > 0);
 
 //    // Delete
-    Integer id = user.getId();
-		userRepository.delete(user);
-    Optional<User> userList = userRepository.findById(id);
-		Assert.assertFalse(userList.isPresent());
-}
+        Integer id = user.getId();
+        userRepository.delete(user);
+        Optional<User> userList = userRepository.findById(id);
+        Assert.assertFalse(userList.isPresent());
+    }
 }

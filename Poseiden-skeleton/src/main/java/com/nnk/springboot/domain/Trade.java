@@ -1,9 +1,9 @@
 package com.nnk.springboot.domain;
 
-import org.springframework.data.annotation.CreatedDate;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -12,8 +12,10 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "trade")
 public class Trade implements Serializable {
+    private static final Logger logger = LogManager.getLogger(Trade.class);
+
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer tradeId;
     @NotNull(message = "account is mandatory")
     private String account;
@@ -38,9 +40,10 @@ public class Trade implements Serializable {
     private String sourceListId;
     private String side;
 
-    public Trade(){}
-    public Trade(Integer tradeId, @NotNull(message = "account is mandatory") String account, @NotNull(message = "type is mandatory") String type, Double buyQuantity, Double sellQuantity, Double buyPrice, Double sellPrice, String benchmark, Timestamp tradeDate, String security, String status, String trader, String book, String creationName, Timestamp creationDate, String revisionName, Timestamp revisionDate, String dealName, String dealType, String sourceListId, String side) {
-        this.tradeId = tradeId;
+    public Trade() {
+    }
+
+    public Trade( @NotNull(message = "account is mandatory") String account, @NotNull(message = "type is mandatory") String type, Double buyQuantity, Double sellQuantity, Double buyPrice, Double sellPrice, String benchmark, Timestamp tradeDate, String security, String status, String trader, String book, String creationName, Timestamp creationDate, String revisionName, Timestamp revisionDate, String dealName, String dealType, String sourceListId, String side) {
         this.account = account;
         this.type = type;
         this.buyQuantity = buyQuantity;
@@ -61,12 +64,6 @@ public class Trade implements Serializable {
         this.dealType = dealType;
         this.sourceListId = sourceListId;
         this.side = side;
-    }
-
-    public Trade(String trade_account, String type, double buy_quantity) {
-        this.account = trade_account;
-        this.type = type;
-        this.buyQuantity = buy_quantity;
     }
 
 

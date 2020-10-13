@@ -1,38 +1,35 @@
 package com.nnk.springboot.domain;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Timestamp;
+
 
 @Entity
 @Table(name = "rating")
 public class Rating implements Serializable {
+    private static final Logger logger = LogManager.getLogger(Rating.class);
+
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String moodysRating;
     private String sandPRating;
     private String fitchRating;
     private Integer orderNumber;
 
-    public Rating(){}
+    public Rating() {
+    }
 
-    public Rating(Integer id, String moodysRating, String sandPRating, String fitchRating, Integer orderNumber) {
-        this.id = id;
+    public Rating( String moodysRating, String sandPRating, String fitchRating, Integer orderNumber) {
         this.moodysRating = moodysRating;
         this.sandPRating = sandPRating;
         this.fitchRating = fitchRating;
         this.orderNumber = orderNumber;
     }
 
-    public Rating(String moodys_rating, String sand_pRating, String fitch_rating, int i) {
-        this.moodysRating = moodys_rating;
-        this.sandPRating = sand_pRating;
-        this.fitchRating = fitch_rating;
-        this.orderNumber = i;
-    }
 
     public Integer getId() {
         return id;
