@@ -56,11 +56,11 @@ public class RatingController {
     @PostMapping("/rating/validate")
     public String validate(@Valid Rating rating, BindingResult result, Model model) {
         if (!result.hasErrors()) {
-            logger.info("Validate rate add and redirect URL rating/list");
+            logger.info("Validate rating add and redirect URL rating/list");
             ratingService.validate(rating, model);
             return "redirect:/rating/list";
         }
-        logger.info("rate add not validated, return URL rating/add");
+        logger.info("rating add not validated, return URL rating/add");
         return "rating/add";
     }
 
@@ -73,7 +73,7 @@ public class RatingController {
      */
     @GetMapping("/rating/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        logger.info("Get a rate with id :" + id);
+        logger.info("Get a rating with id :" + id);
         ratingService.showUpdateForm(id, model);
         return "rating/update";
     }
@@ -91,7 +91,7 @@ public class RatingController {
             logger.info("Updated not validated, return to URL rating/update");
             return "rating/update";
         }
-        logger.info("Validate rate update with id : " + id + " and redirect URL rating/list ");
+        logger.info("Validate rating update with id : " + id + " and redirect URL rating/list ");
         ratingService.updateRating(id, rating, model);
         return "redirect:/rating/list";
     }
@@ -104,7 +104,7 @@ public class RatingController {
      */
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") Integer id, Model model) {
-        logger.info("Delete the rate with id : " + id + " and redirect URL rating/list");
+        logger.info("Delete the rating with id : " + id + " and redirect URL rating/list");
         ratingService.deleteRating(id, model);
         return "redirect:/rating/list";
     }

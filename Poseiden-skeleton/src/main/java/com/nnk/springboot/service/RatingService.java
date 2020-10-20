@@ -32,7 +32,7 @@ public class RatingService {
      * create a new rating with ratingRepository.save.
      */
     public void validate(Rating rating, Model model) {
-        logger.info("Save a new rate");
+        logger.info("Save a new rating");
         ratingRepository.save(rating);
         model.addAttribute("rating", ratingRepository.findAll());
     }
@@ -41,7 +41,7 @@ public class RatingService {
      * find the rating by id with ratingRepository.findById.
      */
     public void showUpdateForm(Integer id, Model model) {
-        logger.info("Find a rate with id :" + id);
+        logger.info("Find a rating with id :" + id);
         Rating rating = ratingRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
         model.addAttribute("rating", rating);
     }
@@ -51,7 +51,7 @@ public class RatingService {
      */
     public void updateRating(Integer id, Rating rating,
                              Model model) {
-        logger.info("Update the rate with id :" + id);
+        logger.info("Update the rating with id :" + id);
         rating.setId(id);
         ratingRepository.save(rating);
         model.addAttribute("rating", ratingRepository.findAll());
@@ -61,7 +61,7 @@ public class RatingService {
      * find and delete the rating by id .
      */
     public void deleteRating(Integer id, Model model) {
-        logger.info("delete the rate with id :" + id);
+        logger.info("delete the rating with id :" + id);
         Rating rating = ratingRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid rating Id:" + id));
         ratingRepository.delete(rating);
         model.addAttribute("rating", ratingRepository.findAll());

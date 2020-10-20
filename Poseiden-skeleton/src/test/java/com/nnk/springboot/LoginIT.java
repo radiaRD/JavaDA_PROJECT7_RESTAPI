@@ -35,4 +35,10 @@ public class LoginIT {
         this.mockMvc.perform(get("/app/error")).andDo(print())
                 .andExpect(view().name("403"));
     }
+
+    @Test
+    public void logout() throws Exception {
+        this.mockMvc.perform(get("/app/logout")).andDo(print())
+                .andExpect(view().name("logout"));
+    }
 }

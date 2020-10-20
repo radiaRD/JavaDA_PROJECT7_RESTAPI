@@ -6,16 +6,13 @@
     <link rel="stylesheet" href="/css/styles.css"/>
 </head>
 <body>
-<h3>Log out user </h3>
-Logged in user: <b th:inline="text"  class="user"> [[${#httpServletRequest.remoteUser}]] </b>
-<form th:action="@{/app-logout}" method="POST">
-    <input type="submit" value="Logout"/>
+<h3>User not logged in </h3>
+<form>
+    <div class="form-group">
+        <div class="col-sm-12">
+            <a class="btn btn-danger btn-sm" href="/app/login">Login</a>
+        </div>
+    </div>
 </form>
-<table>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.id}">Id</td>
-        <td th:text="${user.username}"> User Name</td>
-    </tr>
-</table>
 </body>
 </html>

@@ -84,7 +84,8 @@ public class Config extends WebSecurityConfigurerAdapter {
                 authorizeRequests().antMatchers(HttpMethod.GET, "/user/**", "/trade/**", "/bidList/**", "/curvePoint/**", "/rating/**", "/ruleName/**").authenticated()
                 .antMatchers(HttpMethod.POST, "/user/**", "/trade/**", "/bidList/**", "/curvePoint/**", "/rating/**", "/ruleName/**").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user/**", "/trade/**", "/bidList/**", "/curvePoint/**", "/rating/**", "/ruleName/**").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/user/**", "/trade/**", "/bidList/**", "/curvePoint/**", "/rating/**", "/ruleName/**").authenticated().and().
+                .antMatchers(HttpMethod.DELETE, "/user/**", "/trade/**", "/bidList/**", "/curvePoint/**", "/rating/**", "/ruleName/**").authenticated()
+                .and().
                 requestCache().requestCache(new NullRequestCache()).and().
                 cors().and().
                 csrf().disable()
@@ -95,7 +96,7 @@ public class Config extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl("/app-logout").
-                logoutSuccessUrl("/app/login");
+                logoutSuccessUrl("/app/logout");
 
     }
 

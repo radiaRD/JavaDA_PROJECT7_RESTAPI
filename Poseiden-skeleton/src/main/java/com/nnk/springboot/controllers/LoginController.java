@@ -1,7 +1,6 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.repositories.UserRepository;
-import com.nnk.springboot.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +18,6 @@ public class LoginController {
 
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    UserService userService;
-
 
     /**
      * User login.
@@ -63,6 +58,19 @@ public class LoginController {
         String errorMessage = "You are not authorized for the requested data.";
         mav.addObject("errorMsg", errorMessage);
         mav.setViewName("403");
+        return mav;
+    }
+
+    /**
+     * User log out.
+     *
+     * @return logout URL.
+     */
+    @GetMapping("logout")
+    public ModelAndView logout() {
+        logger.info("User log out");
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("logout");
         return mav;
     }
 
