@@ -27,7 +27,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class CurvePointIT {
+
+    private static int counter = 0;
 
     @Autowired
     private MockMvc mockMvc;
@@ -48,7 +51,7 @@ public class CurvePointIT {
     void homeTest() throws Exception {
         this.mockMvc.perform(get("/curvePoint/list")).andDo(print()).andExpect(status().isOk())
                 .andExpect(view().name("curvePoint/list"))
-                .andExpect(model().attribute("curvePoint", Matchers.hasSize(1)));
+                .andExpect(model().attribute("curvePoint", Matchers.hasSize(0)));
     }
 
     @WithMockUser(value = "admin", password = "admin")
@@ -60,8 +63,8 @@ public class CurvePointIT {
 
     @WithMockUser(value = "admin", password = "admin")
     @Test
-    @Transactional
     public void validateTest() throws Exception {
+        counter = counter + 1;
         this.mockMvc.perform(post("/curvePoint/validate")
 
                 .param("curveId", "21")
@@ -72,22 +75,32 @@ public class CurvePointIT {
                 .contentType("text/html;charset=UTF-8"))
                 .andExpect(redirectedUrl("/curvePoint/list"));
         this.mockMvc.perform(get("/curvePoint/list")).andDo(print()).andExpect(status().isOk())
-                .andExpect(model().attribute("curvePoint", Matchers.hasSize(2)));
+                .andExpect(model().attribute("curvePoint", Matchers.hasSize(1)));
     }
 
     @WithMockUser(value = "admin", password = "admin")
     @Test
     void showUpdateFormListTest() throws Exception {
-        this.mockMvc.perform(get("/curvePoint/update/20")).andDo(print()).andExpect(status().isOk())
+        counter = counter + 1;
+        this.mockMvc.perform(post("/curvePoint/validate")
+
+                .param("curveId", "21")
+                .param("asOfDate","2020-10-03 21:04:40")
+                .param("term", "20.0")
+                .param("value", "20.0")
+                .param("creationDate","2020-10-03 21:04:40")
+                .contentType("text/html;charset=UTF-8"));
+        this.mockMvc.perform(get("/curvePoint/update/"+counter)).andDo(print()).andExpect(status().isOk())
                 .andExpect(view().name("curvePoint/update"))
-                .andExpect(model().attribute("curvePoint", Matchers.hasProperty("curveId", is(20))));
+                .andExpect(model().attribute("curvePoint", Matchers.hasProperty("id", is(counter))));
     }
 
     @WithMockUser(value = "admin", password = "admin")
     @Test
     public void updateTest() throws Exception {
+        counter = counter + 1;
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/curvePoint/update/20")
+                .post("/curvePoint/update/1")
                 .param("curveId", "20")
                 .param("asOfDate","2020-10-03 21:04:40")
                 .param("term", "20.1")
@@ -95,15 +108,23 @@ public class CurvePointIT {
                 .param("creationDate","2020-10-03 21:04:40")
                 .contentType("text/html;charset=UTF-8"))
                 .andExpect(redirectedUrl("/curvePoint/list"));
-        this.mockMvc.perform(get("/curvePoint/update/20")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/curvePoint/update/"+counter)).andDo(print()).andExpect(status().isOk())
                 .andExpect(model().attribute("curvePoint", Matchers.hasProperty("term", is(20.1))));
     }
 
     @WithMockUser(value = "admin", password = "admin")
     @Test
-    @Transactional
     void deleteTest() throws Exception {
-        this.mockMvc.perform(get("/curvePoint/delete/20")).andDo(print())
+        counter = counter + 1;
+        this.mockMvc.perform(post("/curvePoint/validate")
+
+                .param("curveId", "21")
+                .param("asOfDate","2020-10-03 21:04:40")
+                .param("term", "20.0")
+                .param("value", "20.0")
+                .param("creationDate","2020-10-03 21:04:40")
+                .contentType("text/html;charset=UTF-8"));
+        this.mockMvc.perform(get("/curvePoint/delete/"+counter)).andDo(print())
                 .andExpect(redirectedUrl("/curvePoint/list"));
         this.mockMvc.perform(get("/curvePoint/list")).andDo(print()).andExpect(status().isOk())
                 .andExpect(model().attribute("curvePoint", Matchers.hasSize(0)));

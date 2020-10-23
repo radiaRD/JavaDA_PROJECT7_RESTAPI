@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -14,12 +15,13 @@ public class BidList implements Serializable {
     private static final Logger logger = LogManager.getLogger(BidList.class);
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bidListId;
-    @NotNull(message = "account is mandatory")
+    @NotNull(message = "Account is mandatory")
     private String account;
-    @NotNull(message = "type is mandatory")
+    @NotNull(message = "Type is mandatory")
     private String type;
+    @NotNull(message = "bidQuantity is mandatory")
     private Double bidQuantity;
     private Double askQuantity;
     private Double bid;

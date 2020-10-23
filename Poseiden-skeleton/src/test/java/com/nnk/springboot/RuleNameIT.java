@@ -24,7 +24,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class RuleNameIT {
+
+    private static int counter = 0;
 
     @Autowired
     private MockMvc mockMvc;
@@ -45,7 +48,7 @@ public class RuleNameIT {
     void homeTest() throws Exception {
         this.mockMvc.perform(get("/ruleName/list")).andDo(print()).andExpect(status().isOk())
                 .andExpect(view().name("ruleName/list"))
-                .andExpect(model().attribute("ruleName", Matchers.hasSize(2)));;
+                .andExpect(model().attribute("ruleName", Matchers.hasSize(0)));;
     }
 
     @WithMockUser(value = "user1", password = "Password1@")
@@ -57,8 +60,8 @@ public class RuleNameIT {
 
     @WithMockUser(value = "user1", password = "Password1@")
     @Test
-    @Transactional
     public void validateTest() throws Exception {
+        counter = counter + 1;
         this.mockMvc.perform(post("/ruleName/validate")
                 .param("name", "name")
                 .param("description", "description")
@@ -69,21 +72,32 @@ public class RuleNameIT {
                 .contentType("text/html;charset=UTF-8"))
                 .andExpect(redirectedUrl("/ruleName/list"));
         this.mockMvc.perform(get("/ruleName/list")).andDo(print()).andExpect(status().isOk())
-                .andExpect(model().attribute("ruleName", Matchers.hasSize(3)));
+                .andExpect(model().attribute("ruleName", Matchers.hasSize(1)));
     }
 
     @WithMockUser(value = "user1", password = "Password1@")
     @Test
     void showUpdateFormListTest() throws Exception {
-        this.mockMvc.perform(get("/ruleName/update/24")).andDo(print()).andExpect(status().isOk())
-                .andExpect(view().name("ruleName/update"));
+        counter = counter + 1;
+        this.mockMvc.perform(post("/ruleName/validate")
+                .param("name", "name")
+                .param("description", "description")
+                .param("json", "json")
+                .param("template", "template")
+                .param("sqlStr", "sqlStr")
+                .param("sqlPart", "sqlPart")
+                .contentType("text/html;charset=UTF-8"));
+        this.mockMvc.perform(get("/ruleName/update/"+counter)).andDo(print()).andExpect(status().isOk())
+                .andExpect(view().name("ruleName/update"))
+        .andExpect(model().attribute("ruleName", Matchers.hasProperty("id", is(counter))));
     }
 
     @WithMockUser(value = "user1", password = "Password1@")
     @Test
     public void updateTest() throws Exception {
+        counter = counter + 1;
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/ruleName/update/24")
+                .post("/ruleName/update/1")
                 .param("name", "Name")
                 .param("description", "Description")
                 .param("json", "Json")
@@ -92,18 +106,26 @@ public class RuleNameIT {
                 .param("sqlPart", "Sql Part")
                 .contentType("text/html;charset=UTF-8"))
                 .andExpect(redirectedUrl("/ruleName/list"));
-        this.mockMvc.perform(get("/ruleName/update/24")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/ruleName/update/"+counter)).andDo(print()).andExpect(status().isOk())
                 .andExpect(model().attribute("ruleName", Matchers.hasProperty("sqlStr", is("Sql"))));
     }
 
     @WithMockUser(value = "user1", password = "Password1@")
     @Test
-    @Transactional
     void deleteTest() throws Exception {
-        this.mockMvc.perform(get("/ruleName/delete/24")).andDo(print())
+        counter = counter + 1;
+        this.mockMvc.perform(post("/ruleName/validate")
+                .param("name", "name")
+                .param("description", "description")
+                .param("json", "json")
+                .param("template", "template")
+                .param("sqlStr", "sqlStr")
+                .param("sqlPart", "sqlPart")
+                .contentType("text/html;charset=UTF-8"));
+        this.mockMvc.perform(get("/ruleName/delete/"+counter)).andDo(print())
                 .andExpect(redirectedUrl("/ruleName/list"));
         this.mockMvc.perform(get("/ruleName/list")).andDo(print()).andExpect(status().isOk())
-                .andExpect(model().attribute("ruleName", Matchers.hasSize(1)));
+                .andExpect(model().attribute("ruleName", Matchers.hasSize(0)));
     }
 
 }

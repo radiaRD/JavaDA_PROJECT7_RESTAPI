@@ -24,7 +24,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class RatingIT {
+    private static int counter = 0;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -44,7 +47,7 @@ public class RatingIT {
     void homeTest() throws Exception {
         this.mockMvc.perform(get("/rating/list")).andDo(print()).andExpect(status().isOk())
                 .andExpect(view().name("rating/list"))
-                .andExpect(model().attribute("rating", Matchers.hasSize(1)));
+                .andExpect(model().attribute("rating", Matchers.hasSize(0)));
     }
 
     @WithMockUser(value = "user1", password = "Password1@")
@@ -56,8 +59,8 @@ public class RatingIT {
 
     @WithMockUser(value = "user1", password = "Password1@")
     @Test
-    @Transactional
     public void validateTest() throws Exception {
+        counter = counter + 1;
         this.mockMvc.perform(post("/rating/validate")
                 .param("moodysRating", "moodysRating")
                 .param("sandPRating", "sandPRating")
@@ -66,38 +69,53 @@ public class RatingIT {
                 .contentType("text/html;charset=UTF-8"))
                 .andExpect(redirectedUrl("/rating/list"));
         this.mockMvc.perform(get("/rating/list")).andDo(print()).andExpect(status().isOk())
-                .andExpect(model().attribute("rating", Matchers.hasSize(2)));
+                .andExpect(model().attribute("rating", Matchers.hasSize(1)));
     }
 
     @WithMockUser(value = "user1", password = "Password1@")
     @Test
     void showUpdateFormListTest() throws Exception {
-        this.mockMvc.perform(get("/rating/update/22")).andDo(print()).andExpect(status().isOk())
+        counter = counter + 1;
+        this.mockMvc.perform(post("/rating/validate")
+                .param("moodysRating", "moodysRating")
+                .param("sandPRating", "sandPRating")
+                .param("fitchRating", "fitchRating")
+                .param("orderNumber", "20")
+                .contentType("text/html;charset=UTF-8"));
+        this.mockMvc.perform(get("/rating/update/"+counter)).andDo(print()).andExpect(status().isOk())
                 .andExpect(view().name("rating/update"))
-                .andExpect(model().attribute("rating", Matchers.hasProperty("orderNumber", is(22))));;
+                .andExpect(model().attribute("rating", Matchers.hasProperty("id", is(counter))));;
     }
 
     @WithMockUser(value = "user1", password = "Password1@")
     @Test
     public void updateTest() throws Exception {
+        counter = counter + 1;
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/rating/update/22")
+                .post("/rating/update/1")
                 .param("moodysRating", "MoodysRating")
                 .param("sandPRating", "sandPRating")
                 .param("fitchRating", "fitchRating")
                 .param("orderNumber", "22")
                 .contentType("text/html;charset=UTF-8"))
                 .andExpect(redirectedUrl("/rating/list"));
-        this.mockMvc.perform(get("/rating/update/22")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/rating/update/"+counter)).andDo(print()).andExpect(status().isOk())
                 .andExpect(model().attribute("rating", Matchers.hasProperty("moodysRating", is("MoodysRating"))));
 
     }
 
     @WithMockUser(value = "user1", password = "Password1@")
     @Test
-    @Transactional
     void deleteTest() throws Exception {
-        this.mockMvc.perform(get("/rating/delete/22")).andDo(print())
+        counter = counter + 1;
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/rating/validate")
+                .param("moodysRating", "MoodysRating")
+                .param("sandPRating", "sandPRating")
+                .param("fitchRating", "fitchRating")
+                .param("orderNumber", "22")
+                .contentType("text/html;charset=UTF-8"));
+        this.mockMvc.perform(get("/rating/delete/"+counter)).andDo(print())
                 .andExpect(redirectedUrl("/rating/list"));
         this.mockMvc.perform(get("/rating/list")).andDo(print()).andExpect(status().isOk())
                 .andExpect(model().attribute("rating", Matchers.hasSize(0)));

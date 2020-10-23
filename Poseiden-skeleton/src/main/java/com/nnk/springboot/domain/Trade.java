@@ -15,11 +15,11 @@ public class Trade implements Serializable {
     private static final Logger logger = LogManager.getLogger(Trade.class);
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer tradeId;
-    @NotNull(message = "account is mandatory")
+    @NotNull(message = "Account is mandatory")
     private String account;
-    @NotNull(message = "type is mandatory")
+    @NotNull(message = "Type is mandatory")
     private String type;
     private Double buyQuantity;
     private Double sellQuantity;

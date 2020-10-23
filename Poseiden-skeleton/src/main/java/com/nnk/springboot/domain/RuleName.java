@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 
@@ -13,13 +14,19 @@ public class RuleName implements Serializable {
     private static final Logger logger = LogManager.getLogger(RuleName.class);
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotNull(message = "Name must not be null")
     private String name;
+    @NotNull(message = "Description must not be null")
     private String description;
+    @NotNull(message = "Json must not be null")
     private String json;
+    @NotNull(message = "Template must not be null")
     private String template;
+    @NotNull(message = "SqlStr must not be null")
     private String sqlStr;
+    @NotNull(message = "SqlPart must not be null")
     private String sqlPart;
 
     public RuleName() {

@@ -16,12 +16,14 @@ public class CurvePoint implements Serializable {
     private static final Logger logger = LogManager.getLogger(CurvePoint.class);
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotNull(message = "curveId must not be null")
+    @NotNull(message = "CurveId must not be null")
     private Integer curveId;
     private Timestamp asOfDate;
+    @NotNull(message = "Term must not be null")
     private Double term;
+    @NotNull(message = "Value must not be null")
     private Double value;
     private Timestamp creationDate;
 

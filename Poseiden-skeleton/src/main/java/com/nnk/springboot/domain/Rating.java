@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 
@@ -13,11 +14,15 @@ public class Rating implements Serializable {
     private static final Logger logger = LogManager.getLogger(Rating.class);
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotNull(message = "MoodysRating is mandatory")
     private String moodysRating;
+    @NotNull(message = "SandPRating is mandatory")
     private String sandPRating;
+    @NotNull(message = "FitchRating is mandatory")
     private String fitchRating;
+    @NotNull(message = "OrderNumber is mandatory")
     private Integer orderNumber;
 
     public Rating() {

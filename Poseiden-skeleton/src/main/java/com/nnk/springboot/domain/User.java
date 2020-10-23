@@ -13,7 +13,7 @@ public class User implements Serializable {
     private static final Logger logger = LogManager.getLogger(User.class);
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotBlank(message = "Username is mandatory")
     @Column(unique = true)
